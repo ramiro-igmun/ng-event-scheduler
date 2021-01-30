@@ -1,0 +1,14 @@
+<mat-list class="inline-list">
+  <mat-list-item class="bordered-list-item"
+                 *ngFor="let date of daysOfYear"
+                 [style.width.em]="7">{{date | date: 'dd/MMM'}}</mat-list-item>
+</mat-list>
+
+<div class="inline-list" cdkDropListGroup>
+  <div *ngFor="let date of daysOfYear"
+       [cdkDropListData]="eventData.get(getDayOfYear(date))"
+       cdkDropList class="bordered-list-item"
+       (cdkDropListDropped)="onEventDropped($event)">
+    <div cdkDrag style="background: green; width: 406%" *ngIf="eventData.get(getDayOfYear(date))?.length">hola</div>
+  </div>
+</div>
