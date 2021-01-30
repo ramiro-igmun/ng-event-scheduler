@@ -12,3 +12,25 @@
     <div cdkDrag style="background: green; width: 406%" *ngIf="eventData.get(getDayOfYear(date))?.length">hola</div>
   </div>
 </div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Sección</th>
+    <th *ngFor="let date of daysOfYear">{{date | date: 'dd/MMM'}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th>Línea 1</th>
+    <ng-container cdkDropListGroup>
+      <td *ngFor="let date of daysOfYear"
+          cdkDropList
+          (cdkDropListDropped)="onEventDropped($event)"
+          [cdkDropListData]="eventData.get(getDayOfYear(date))">
+        <div cdkDrag style="background: green; width: 100%" *ngIf="eventData.get(getDayOfYear(date))?.length">hola</div>
+      </td>
+    </ng-container>
+  </tr>
+  </tbody>
+</table>
