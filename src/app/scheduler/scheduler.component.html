@@ -1,20 +1,5 @@
-<mat-list class="inline-list">
-  <mat-list-item class="bordered-list-item"
-                 *ngFor="let date of daysOfYear"
-                 [style.width.em]="7">{{date | date: 'dd/MMM'}}</mat-list-item>
-</mat-list>
-
-<div class="inline-list" cdkDropListGroup>
-  <div *ngFor="let date of daysOfYear"
-       [cdkDropListData]="eventData.get(getDayOfYear(date))"
-       cdkDropList class="bordered-list-item"
-       (cdkDropListDropped)="onEventDropped($event)">
-    <div cdkDrag style="background: green; width: 406%" *ngIf="eventData.get(getDayOfYear(date))?.length">hola</div>
-  </div>
-</div>
-
-<table class="table">
-  <thead>
+<table class="table table-bordered table-responsive scheduler">
+  <thead class="thead-light">
   <tr>
     <th>Sección</th>
     <th *ngFor="let date of daysOfYear">{{date | date: 'dd/MMM'}}</th>
@@ -26,11 +11,33 @@
     <ng-container cdkDropListGroup>
       <td *ngFor="let date of daysOfYear"
           cdkDropList
-          (cdkDropListDropped)="onEventDropped($event)"
-          [cdkDropListData]="eventData.get(getDayOfYear(date))">
-        <div cdkDrag style="background: green; width: 100%" *ngIf="eventData.get(getDayOfYear(date))?.length">hola</div>
+          (cdkDropListDropped)="onEventDropped($event, date)"
+          [cdkDropListData]="eventsData.get(getDayOfYear(date))">
+        <div cdkDrag
+             [cdkDragData]="eventsData.get(getDayOfYear(date))[0]"
+             [style.width.%]="(eventsData.get(getDayOfYear(date))[0].duration.days * 100)"
+             style="background-color: cornflowerblue; border: dimgray dotted 2px"
+             *ngIf="eventsData.get(getDayOfYear(date)).length">
+          {{eventsData.get(getDayOfYear(date))[0]?.name}}
+        </div>
       </td>
     </ng-container>
   </tr>
+<!--  <tr>-->
+<!--    <th>Línea 2</th>-->
+<!--    <ng-container cdkDropListGroup>-->
+<!--      <td *ngFor="let date of daysOfYear"-->
+<!--          cdkDropList-->
+<!--          (cdkDropListDropped)="onEventDropped($event)"-->
+<!--          [cdkDropListData]="eventsData.get(getDayOfYear(date))">-->
+<!--        <div cdkDrag-->
+<!--             [style.width.%]="(eventsData.get(getDayOfYear(date))[0].duration.days * 100)"-->
+<!--             style="background-color: darkseagreen; border: dimgray dotted 2px"-->
+<!--             *ngIf="eventsData.get(getDayOfYear(date)).length">-->
+<!--          {{eventsData.get(getDayOfYear(date))[0]?.name}}-->
+<!--        </div>-->
+<!--      </td>-->
+<!--    </ng-container>-->
+<!--  </tr>-->
   </tbody>
 </table>

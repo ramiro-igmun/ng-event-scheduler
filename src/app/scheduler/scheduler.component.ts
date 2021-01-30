@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ArrayService} from '../services/array.service';
-import {add, getDayOfYear} from 'date-fns';
+import {addHours, eachDayOfInterval, endOfYear, getDayOfYear, intervalToDuration, startOfYear} from 'date-fns';
 
 interface ScheduleEvent {
   name: string;
@@ -18,8 +18,7 @@ interface ScheduleEvent {
 export class SchedulerComponent implements OnInit {
 
   daysOfYear: Date[] = [];
-  eventData = new Map<number, string[]>();
-  eventDate = new Date('01/05/2021');
+  eventsData = new Map<number, ScheduleEvent[]>();
 
   getDayOfYear = getDayOfYear;
 
@@ -31,8 +30,8 @@ export class SchedulerComponent implements OnInit {
     },
     {
       name: 'dos',
-      start: new Date('01/08/21'),
-      end: new Date('03/13/21')
+      start: new Date('01/09/21'),
+      end: new Date('01/13/21')
     }
   ];
 
@@ -41,28 +40,32 @@ export class SchedulerComponent implements OnInit {
 
   ngOnInit(): void {
     this.daysOfYear = this.getYearDatesArray();
-    this.eventData = this.getScheduledEventData(this.daysOfYear);
+    this.eventsData = this.getScheduledEventData(this.daysOfYear, this.events);
   }
 
-  private getYearDatesArray(): Date[] {
-    let tempDate = new Date(new Date().getFullYear(), 0);
-    const tempDates: Date[] = [];
-    while (tempDate.getFullYear() === new Date().getFullYear()) {
-      tempDates.push(tempDate);
-      tempDate = add(tempDate, {days: 1});
-    }
-    return tempDates;
-  }
-
-  onEventDropped($event: CdkDragDrop<any>): void {
-    console.log($event.container.data);
-    console.log($event.previousContainer.data);
+  onEventDropped($event: CdkDragDrop<any>, date: Date): void {
+    console.log($event);
+    console.log(date);
+    console.log(this.events);
+    const event = $event.item.data;
+    event.start = date;
+    event.end = addHours(event.end, event.duration.hours);
+    console.log(event);
+    console.log(this.events);
     transferArrayItem($event.previousContainer.data, $event.container.data, 0, 0);
   }
 
-  private getScheduledEventData(days: Date[]): Map<number, string[]> {
-    const scheduledEvents = new Map<number, string[]>();
+  private getYearDatesArray(): Date[] {
+    return eachDayOfInterval({start: startOfYear(new Date()), end: endOfYear(new Date())});
+  }
+
+  private getScheduledEventData(days: Date[], events: ScheduleEvent[]): Map<number, ScheduleEvent[]> {
+    const scheduledEvents = new Map<number, ScheduleEvent[]>();
     days.forEach(day => scheduledEvents.set(getDayOfYear(day), []));
+    events.forEach(event => {
+      event.duration = intervalToDuration({start: event.start, end: event.end});
+      scheduledEvents.set(getDayOfYear(event.start), [event]);
+    });
     return scheduledEvents;
   }
 }

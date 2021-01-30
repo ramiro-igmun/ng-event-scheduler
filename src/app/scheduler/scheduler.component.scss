@@ -3,8 +3,12 @@
   margin-top: 1em;
 }
 
-.bordered-list-item {
-  border: gray solid thin;
-  width: 8em;
-  height: 3em;
+.scheduler {
+  td{
+    padding-right: 0;
+    padding-left: 0;
+    div {
+      color: white;
+    }
+  }
 }
