@@ -1,14 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
-import {ArrayService} from '../services/array.service';
 import {addHours, eachDayOfInterval, endOfYear, getDayOfYear, intervalToDuration, startOfYear} from 'date-fns';
-
-interface ScheduleEvent {
-  name: string;
-  start: Date;
-  end: Date;
-  duration?: Duration;
-}
+import {ScheduleEvent} from '../models/ScheduledEvent';
+import {Line} from '../models/Line';
 
 @Component({
   selector: 'app-scheduler',
@@ -17,25 +11,14 @@ interface ScheduleEvent {
 })
 export class SchedulerComponent implements OnInit {
 
+  @Input() events: ScheduleEvent[] = [];
+  @Input() lines: Line[] = [];
+  @Output() eventDrop = new EventEmitter<ScheduleEvent>();
+
   daysOfYear: Date[] = [];
   eventsData = new Map<number, ScheduleEvent[]>();
 
-  getDayOfYear = getDayOfYear;
-
-  events: ScheduleEvent[] = [
-    {
-      name: 'uno',
-      start: new Date('01/05/21'),
-      end: new Date('01/07/21')
-    },
-    {
-      name: 'dos',
-      start: new Date('01/09/21'),
-      end: new Date('01/13/21')
-    }
-  ];
-
-  constructor(private arrayService: ArrayService) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -44,15 +27,11 @@ export class SchedulerComponent implements OnInit {
   }
 
   onEventDropped($event: CdkDragDrop<any>, date: Date): void {
-    console.log($event);
-    console.log(date);
-    console.log(this.events);
     const event = $event.item.data;
     event.start = date;
     event.end = addHours(event.end, event.duration.hours);
-    console.log(event);
-    console.log(this.events);
     transferArrayItem($event.previousContainer.data, $event.container.data, 0, 0);
+    this.eventDrop.emit(event);
   }
 
   private getYearDatesArray(): Date[] {
@@ -67,5 +46,14 @@ export class SchedulerComponent implements OnInit {
       scheduledEvents.set(getDayOfYear(event.start), [event]);
     });
     return scheduledEvents;
+  }
+
+  getDateEventData(date: Date): ScheduleEvent | null {
+    const eventData = this.eventsData.get(getDayOfYear(date));
+    return eventData && eventData.length ? eventData[0] : null;
+  }
+
+  getDateEventDataAsArray(date: Date): ScheduleEvent[] | [] {
+    return  this.eventsData.get(getDayOfYear(date)) || [];
   }
 }

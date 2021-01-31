@@ -6,19 +6,19 @@
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <th>Línea 1</th>
+  <tr *ngFor="let line of lines">
+    <th>{{line.name}}</th>
     <ng-container cdkDropListGroup>
       <td *ngFor="let date of daysOfYear"
           cdkDropList
           (cdkDropListDropped)="onEventDropped($event, date)"
-          [cdkDropListData]="eventsData.get(getDayOfYear(date))">
+          [cdkDropListData]="getDateEventDataAsArray(date)">
         <div cdkDrag
-             [cdkDragData]="eventsData.get(getDayOfYear(date))[0]"
-             [style.width.%]="(eventsData.get(getDayOfYear(date))[0].duration.days * 100)"
+             [cdkDragData]="getDateEventData(date)"
+             [style.width.%]="(getDateEventData(date)?.duration?.days || 1) * 100"
              style="background-color: cornflowerblue; border: dimgray dotted 2px"
-             *ngIf="eventsData.get(getDayOfYear(date)).length">
-          {{eventsData.get(getDayOfYear(date))[0]?.name}}
+             *ngIf="getDateEventData(date)">
+          {{getDateEventData(date)?.name}}
         </div>
       </td>
     </ng-container>
