@@ -3,6 +3,10 @@ export interface ScheduleEvent {
   name: string;
   start: Date;
   end: Date;
-  duration?: Duration;
   lineId: number;
+}
+
+export interface ExtendedScheduleEvent extends ScheduleEvent{
+  duration?: Duration;
+  color?: string;
 }

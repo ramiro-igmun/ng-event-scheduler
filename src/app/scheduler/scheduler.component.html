@@ -1,43 +1,34 @@
 <table class="table table-bordered table-responsive scheduler">
+
   <thead class="thead-light">
   <tr>
-    <th>Sección</th>
+    <th></th>
     <th *ngFor="let date of daysOfYear">{{date | date: 'dd/MMM'}}</th>
   </tr>
   </thead>
+
   <tbody>
-  <tr *ngFor="let line of lines">
-    <th>{{line.name}}</th>
-    <ng-container cdkDropListGroup>
+  <ng-container cdkDropListGroup>
+    <tr *ngFor="let line of lines">
+      <th>{{line.name}}</th>
       <td *ngFor="let date of daysOfYear"
+          [style.border-left]="isToday(date) ? 'black 2px dotted' : ''"
           cdkDropList
-          (cdkDropListDropped)="onEventDropped($event, date)"
-          [cdkDropListData]="getDateEventDataAsArray(date)">
-        <div cdkDrag
-             [cdkDragData]="getDateEventData(date)"
-             [style.width.%]="(getDateEventData(date)?.duration?.days || 1) * 100"
-             style="background-color: cornflowerblue; border: dimgray dotted 2px"
-             *ngIf="getDateEventData(date)">
-          {{getDateEventData(date)?.name}}
-        </div>
+          (cdkDropListDropped)="onEventDropped($event, date, line)"
+          [cdkDropListData]="getDateEventDataAsArray(line, date)">
+        <ng-container *ngIf="getDateEventData(line, date); let eventData">
+          <div class="event"
+               cdkDrag
+               [cdkDragData]="eventData"
+               [style.width.%]="(eventData?.duration?.days || 1) * 100"
+               [style.background]="eventData?.color"
+               *ngIf="eventData?.lineId === line.id">
+            {{eventData?.name}}
+          </div>
+        </ng-container>
       </td>
-    </ng-container>
-  </tr>
-<!--  <tr>-->
-<!--    <th>Línea 2</th>-->
-<!--    <ng-container cdkDropListGroup>-->
-<!--      <td *ngFor="let date of daysOfYear"-->
-<!--          cdkDropList-->
-<!--          (cdkDropListDropped)="onEventDropped($event)"-->
-<!--          [cdkDropListData]="eventsData.get(getDayOfYear(date))">-->
-<!--        <div cdkDrag-->
-<!--             [style.width.%]="(eventsData.get(getDayOfYear(date))[0].duration.days * 100)"-->
-<!--             style="background-color: darkseagreen; border: dimgray dotted 2px"-->
-<!--             *ngIf="eventsData.get(getDayOfYear(date)).length">-->
-<!--          {{eventsData.get(getDayOfYear(date))[0]?.name}}-->
-<!--        </div>-->
-<!--      </td>-->
-<!--    </ng-container>-->
-<!--  </tr>-->
+    </tr>
+  </ng-container>
   </tbody>
+
 </table>

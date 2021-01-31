@@ -4,11 +4,26 @@
 }
 
 .scheduler {
-  td{
-    padding-right: 0;
-    padding-left: 0;
-    div {
-      color: white;
+  table-layout: fixed;
+  th {
+    white-space: nowrap;
+  }
+  tbody {
+    tr {
+      height: 3.5em;
+    }
+    td {
+      padding-right: 0;
+      padding-left: 0;
+
+      div {
+        color: whitesmoke;
+      }
     }
   }
+}
+
+.event {
+  border: dimgray dotted 2px;
+  cursor: pointer;
 }

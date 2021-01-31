@@ -23,6 +23,13 @@ export class AppComponent {
       start: new Date('01/09/21'),
       end: new Date('01/13/21'),
       lineId : 2
+    },
+    {
+      id: 3,
+      name: 'tres',
+      start: new Date('01/01/21'),
+      end: new Date('01/5/21'),
+      lineId : 2
     }
   ];
   lines: Line[] = [
@@ -31,8 +38,12 @@ export class AppComponent {
       name: 'Línea 1'
     },
     {
-      id: 1,
+      id: 2,
       name: 'Línea 2'
+    },
+    {
+      id: 3,
+      name: 'Línea 3'
     }
   ];
 
