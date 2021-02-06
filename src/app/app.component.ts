@@ -13,22 +13,22 @@ export class AppComponent {
     {
       id: 1,
       name: 'uno',
-      start: new Date('01/05/21 00:05'),
-      end: new Date('01/07/21 23:55'),
+      start: new Date('02/05/21 00:05'),
+      end: new Date('02/07/21 23:55'),
       lineId: 1,
     },
     {
       id: 2,
       name: 'dos',
-      start: new Date('01/09/21 00:05'),
-      end: new Date('01/13/21 23:55'),
+      start: new Date('02/09/21 00:05'),
+      end: new Date('02/13/21 23:55'),
       lineId : 2
     },
     {
       id: 3,
       name: 'tres',
-      start: new Date('01/01/21 00:05'),
-      end: new Date('01/5/21 23:55'),
+      start: new Date('02/01/21 00:05'),
+      end: new Date('02/5/21 23:55'),
       lineId : 2
     }
   ];

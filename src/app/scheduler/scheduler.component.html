@@ -12,6 +12,7 @@
     <tr *ngFor="let line of lines">
       <th>{{line.name}}</th>
       <td *ngFor="let date of daysOfYear"
+          #day id="{{date.getTime()}}"
           [style.border-left]="isToday(date) ? 'black 2px dotted' : ''"
           cdkDropList
           (cdkDropListDropped)="onEventDropped($event, date, line)"
@@ -20,7 +21,7 @@
           <div class="event"
                cdkDrag
                [cdkDragData]="eventData"
-               [style.width.%]="(eventData?.duration?.days || 1) * 100"
+               [style.width.%]="((eventData?.duration?.days || 1) * 100) + ((eventData?.duration?.days || 0 )+ 2)"
                [style.background]="eventData?.color"
                *ngIf="eventData?.lineId === line.id">
             {{eventData?.name}}
